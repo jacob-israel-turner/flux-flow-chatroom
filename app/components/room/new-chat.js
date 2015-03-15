@@ -6,7 +6,7 @@ var NewChat = React.createClass({
 	},
 	handleSubmit: function(e){
 		e.preventDefault();
-		console.log(this.refs.text.getDOMNode().value);
+		this.props.cb(this.refs.text.getDOMNode().value);
 		this.refs.text.getDOMNode().value = '';
 	},
 	render: function() {

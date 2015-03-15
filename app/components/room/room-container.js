@@ -1,8 +1,10 @@
 var React = require('react');
 var Router = require('react-router');
-var NewChat = require('components/room/new-chat');
 var fbUtils = require('utils/fb-utils');
 var ref = fbUtils.homeRef.child('rooms');
+
+var NewChat = require('components/room/new-chat');
+var Message = require('components/room/message');
 
 var RoomContainer = React.createClass({
 	mixins: [Router.State],
@@ -22,12 +24,19 @@ var RoomContainer = React.createClass({
 		}, function(){
 			console.log(this.state);
 		})
-	}, 
+	},
+	handleSubmit: function(message){
+		ref.child(this.state.name).push(message);
+	},
 	render: function() {
+		var Messages = this.state.messages.map(function(item, index){
+			return <Message key={index} message={item} />
+		})
 		return (
 			<div className='container flex flex-column flex--align-center'>
 				<h1>Welcome to {this.state.name}</h1>
-				<NewChat />
+				<NewChat cb={this.handleSubmit} />
+				{ Messages.reverse() }
 			</div>
 		);
 	},
